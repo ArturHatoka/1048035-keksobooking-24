@@ -53,4 +53,4 @@ const getOffers = (start, amount) => {
   }
   return offersStruct;
 };
-const offers = getOffers(1,10);
+getOffers(1,10);
