@@ -24,29 +24,27 @@ const getFloatRandom = (min, max, order) => {
   return minPos >= maxPos ? null : +((Math.random() * (maxPos - minPos + 1)) + minPos).toFixed(orderPos);
 };
 
-const setNewOffer = () => {
-  offersStruct.push({
-    author: {
-      avatar: `img/avatars/user${imgId}.png`,
-    },
-    offer: {
-      title: `Предложение №${idx}`,
-      address: `${location.lat}, ${location.lng}`,
-      price: getIntRandom(10000, 100000),
-      type: types[getIntRandom(0,types.length-1)],
-      rooms: getIntRandom(1, 5),
-      guests: getIntRandom(1, 10),
-      checkin: checks[getIntRandom(0, checks.length-1)],
-      checkout: checks[getIntRandom(0, checks.length-1)],
-      features: features.slice(0, getIntRandom(0, features.length-1)),
-      description: `Описание помещения №${idx}`,
-      photos: photos.slice(0, getIntRandom(0, features.length-1)),
-      location: location,
-    },
-  });
-};
+const createNewOffer = (idx, location, imgId) => ({
+  author: {
+    avatar: `img/avatars/user${imgId}.png`,
+  },
+  offer: {
+    title: `Предложение №${idx}`,
+    address: `${location.lat}, ${location.lng}`,
+    price: getIntRandom(10000, 100000),
+    type: types[getIntRandom(0,types.length-1)],
+    rooms: getIntRandom(1, 5),
+    guests: getIntRandom(1, 10),
+    checkin: checks[getIntRandom(0, checks.length-1)],
+    checkout: checks[getIntRandom(0, checks.length-1)],
+    features: features.slice(0, getIntRandom(0, features.length-1)),
+    description: `Описание помещения №${idx}`,
+    photos: photos.slice(0, getIntRandom(0, features.length-1)),
+    location: location,
+  },
+});
 
-const setOffersList = (start, amount) => {
+const createOfferList = (start, amount) => {
   for (let idx = start; idx <= amount; idx++) {
     const imgId = idx.padStart(2, '0');
     const location = {
@@ -54,8 +52,8 @@ const setOffersList = (start, amount) => {
       lng: getFloatRandom(139.70000, 139.80000, 5),
     };
 
-    setNewOffer(imgId, location);
+    offersStruct.push(createNewOffer(idx, location, imgId));
   }
 };
 
-setOffersList(1,10);
+createOfferList(1,10);
