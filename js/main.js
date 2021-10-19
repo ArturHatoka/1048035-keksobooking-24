@@ -14,6 +14,6 @@ const createOfferList = (start, amount) => {
 
 const offers = createOfferList(1, 10);
 
-generateCard('#card', offers[0]);
+const card = generateCard(offers[0]);
 
-
+document.querySelector('#map-canvas').appendChild(card);
