@@ -1,4 +1,5 @@
 import {createNewOffer} from './data.js';
+import {generateCard} from './generateElems.js';
 
 const createOfferList = (start, amount) => {
   const offersStruct = [];
@@ -11,5 +12,8 @@ const createOfferList = (start, amount) => {
   return offersStruct;
 };
 
-createOfferList(1, 10);
+const offers = createOfferList(1, 10);
 
+const card = generateCard(offers[0]);
+
+document.querySelector('#map-canvas').appendChild(card);
