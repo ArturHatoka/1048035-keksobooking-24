@@ -7,7 +7,7 @@ const types = {
 };
 
 const createFeatures = (data) => {
-  const featuresWrapper = document.createElement('li');
+  const featuresWrapper = document.createElement('ul');
   featuresWrapper.className = 'popup__features';
 
   if (data.length){
@@ -21,15 +21,19 @@ const createFeatures = (data) => {
   return featuresWrapper;
 };
 
+const createImgTemplate = () => {
+  const imgTemplate = document.createElement('img');
+  imgTemplate.alt = 'Фотография жилья';
+  imgTemplate.className = 'popup__photo';
+
+  return imgTemplate;
+};
+
 const createGallery = (data) => {
   const gallery = document.createElement('div');
   gallery.className = 'popup__photos';
 
-  const imgTemplate = document.createElement('img');
-  imgTemplate.width = 45;
-  imgTemplate.height = 45;
-  imgTemplate.alt = 'Фотография жилья';
-  imgTemplate.className = 'popup__photo';
+  const imgTemplate = createImgTemplate();
 
   for (const imgSrc of data){
     const img = imgTemplate.cloneNode(false);
