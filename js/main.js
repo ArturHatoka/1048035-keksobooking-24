@@ -1,6 +1,6 @@
 import {createNewOffer} from './data.js';
 import {generateCard} from './generateElems.js';
-import {deactivatePage, activatePage} from './form.js';
+import {deactivatePage, activatePage, changeCapacityOptions} from './form.js';
 
 deactivatePage();
 
@@ -16,9 +16,11 @@ const createOfferList = (start, amount) => {
 };
 
 const offers = createOfferList(1, 10);
-
 const card = generateCard(offers[0]);
 
 document.querySelector('#map-canvas').appendChild(card);
+document.querySelector('#room_number').addEventListener('change', changeCapacityOptions);
 
+changeCapacityOptions();
 activatePage();
+
