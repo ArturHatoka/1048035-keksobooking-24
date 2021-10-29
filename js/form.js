@@ -4,7 +4,7 @@ const roomsSelector = document.querySelector('#room_number');
 const capacitySelector = document.querySelector('#capacity');
 
 const getCapacityOptions = (roomsNumb) => {
-  const options = [];
+  const options = document.createDocumentFragment();
 
   if(roomsNumb <= 3){
     for (let i = 1; i<=roomsNumb; i++){
@@ -14,14 +14,14 @@ const getCapacityOptions = (roomsNumb) => {
       option.value = `${i}`;
       option.textContent = `для ${i} гост${ending}`;
 
-      options.push(option);
+      options.appendChild(option);
     }
   } else {
     const option = document.createElement('option');
     option.value = '0';
     option.textContent = 'не для гостей';
 
-    options.push(option);
+    options.appendChild(option);
   }
 
   return options;
@@ -47,17 +47,13 @@ const activatePage = () => {
   changeActivityElements(mapFilters, false);
 };
 
-const changeCapacityOptions = () => {
+const onChangeRoomsNumber = () => {
   const options = getCapacityOptions(roomsSelector.value);
 
-  capacitySelector.querySelectorAll('option').forEach((option) => {
-    option.remove();
-  });
-
-  options.forEach((option) => {
-    capacitySelector.appendChild(option);
-  });
+  capacitySelector.innerHTML = '';
+  capacitySelector.appendChild(options);
 };
 
+roomsSelector.addEventListener('change', onChangeRoomsNumber);
 
-export {deactivatePage, activatePage, changeCapacityOptions};
+export {deactivatePage, activatePage, onChangeRoomsNumber};
