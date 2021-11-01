@@ -2,6 +2,18 @@ const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const roomsSelector = document.querySelector('#room_number');
 const capacitySelector = document.querySelector('#capacity');
+const houseTypeSelector = document.querySelector('#type');
+const priceInput = document.querySelector('#price');
+const timeinSelector = document.querySelector('#timein');
+const timeoutSelector = document.querySelector('#timeout');
+
+const houseTypePrice = {
+  'bungalow': 0,
+  'flat': 1000,
+  'hotel': 3000,
+  'house': 5000,
+  'palace': 10000,
+};
 
 const getCapacityOptions = (roomsNumb) => {
   const options = document.createDocumentFragment();
@@ -54,6 +66,24 @@ const onChangeRoomsNumber = () => {
   capacitySelector.appendChild(options);
 };
 
-roomsSelector.addEventListener('change', onChangeRoomsNumber);
+const onChangeHouseType = () => {
+  const currentMinPrice = houseTypePrice[houseTypeSelector.value];
 
-export {deactivatePage, activatePage, onChangeRoomsNumber};
+  priceInput.min = currentMinPrice;
+  priceInput.placeholder = currentMinPrice;
+};
+
+const onChangeTimein = () => {
+  timeoutSelector.value = timeinSelector.value;
+};
+
+const onChangeTimeout = () => {
+  timeinSelector.value = timeoutSelector.value;
+};
+
+roomsSelector.addEventListener('change', onChangeRoomsNumber);
+houseTypeSelector.addEventListener('change', onChangeHouseType);
+timeinSelector.addEventListener('change', onChangeTimein);
+timeoutSelector.addEventListener('change', onChangeTimeout);
+
+export {deactivatePage, activatePage, onChangeRoomsNumber, onChangeHouseType};
