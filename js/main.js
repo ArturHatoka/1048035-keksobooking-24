@@ -1,6 +1,6 @@
 import {createNewOffer} from './data.js';
 import {generateCard} from './generateElems.js';
-import {deactivatePage, activatePage, onChangeRoomsNumber} from './form.js';
+import {deactivatePage, activatePage, onChangeRoomsNumber, onChangeHouseType} from './form.js';
 
 deactivatePage();
 
@@ -21,5 +21,6 @@ const card = generateCard(offers[0]);
 document.querySelector('#map-canvas').appendChild(card);
 
 onChangeRoomsNumber();
+onChangeHouseType();
 activatePage();
 
