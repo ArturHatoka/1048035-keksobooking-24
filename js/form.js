@@ -73,17 +73,17 @@ const onChangeHouseType = () => {
   priceInput.placeholder = currentMinPrice;
 };
 
-const onChangeTimein = () => {
+const onTimeinChange = () => {
   timeoutSelector.value = timeinSelector.value;
 };
 
-const onChangeTimeout = () => {
+const onTimeoutChange = () => {
   timeinSelector.value = timeoutSelector.value;
 };
 
 roomsSelector.addEventListener('change', onChangeRoomsNumber);
 houseTypeSelector.addEventListener('change', onChangeHouseType);
-timeinSelector.addEventListener('change', onChangeTimein);
-timeoutSelector.addEventListener('change', onChangeTimeout);
+timeinSelector.addEventListener('change', onTimeinChange);
+timeoutSelector.addEventListener('change', onTimeoutChange);
 
 export {deactivatePage, activatePage, onChangeRoomsNumber, onChangeHouseType};
