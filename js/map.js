@@ -27,7 +27,7 @@ const createSelectMarker = () => {
   selectMarker.addTo(map);
 };
 
-const createAdvert = (coords, offer) => {
+const createAdvertMarker = (coords, offer) => {
   const icon = L.icon({
     iconUrl: '/img/pin.svg',
     iconSize: [40, 40],
@@ -49,4 +49,4 @@ const renderMap = () => {
   return map;
 };
 
-export {renderMap, createAdvert};
+export {renderMap, createAdvertMarker};
