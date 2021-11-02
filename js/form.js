@@ -1,3 +1,5 @@
+import {renderMap} from './map.js';
+
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const roomsSelector = document.querySelector('#room_number');
@@ -6,6 +8,7 @@ const houseTypeSelector = document.querySelector('#type');
 const priceInput = document.querySelector('#price');
 const timeinSelector = document.querySelector('#timein');
 const timeoutSelector = document.querySelector('#timeout');
+const address = document.querySelector('#address');
 
 const houseTypePrice = {
   'bungalow': 0,
@@ -81,9 +84,20 @@ const onTimeoutChange = () => {
   timeinSelector.value = timeoutSelector.value;
 };
 
+const onDragMarker = (addr) => {
+  address.value = addr;
+};
+
+const initForm = () => {
+  const map = renderMap();
+  map.whenReady(()=>{
+    activatePage();
+  });
+};
+
 roomsSelector.addEventListener('change', onChangeRoomsNumber);
 houseTypeSelector.addEventListener('change', onChangeHouseType);
 timeinSelector.addEventListener('change', onTimeinChange);
 timeoutSelector.addEventListener('change', onTimeoutChange);
 
-export {deactivatePage, activatePage, onChangeRoomsNumber, onChangeHouseType};
+export {deactivatePage, onChangeRoomsNumber, onChangeHouseType, initForm, onDragMarker};
