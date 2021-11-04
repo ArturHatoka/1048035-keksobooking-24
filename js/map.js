@@ -10,7 +10,7 @@ const map = new L.map('map-canvas', {
 
 const createSelectMarker = () => {
   const selectIcon = L.icon({
-    iconUrl: '/img/main-pin.svg',
+    iconUrl: './img/main-pin.svg',
     iconSize: [52, 52],
     iconAnchor: [26, 52],
   });
