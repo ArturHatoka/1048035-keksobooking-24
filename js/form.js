@@ -1,5 +1,3 @@
-import {renderMap} from './map.js';
-
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const roomsSelector = document.querySelector('#room_number');
@@ -54,7 +52,7 @@ const deactivatePage = () => {
   changeActivityElements(mapFilters, 'disabled');
 };
 
-const activatePage = () => {
+const activateForm = () => {
   form.classList.remove('ad-form--disabled');
   mapFilters.classList.remove('map__filters--disabled');
 
@@ -62,14 +60,14 @@ const activatePage = () => {
   changeActivityElements(mapFilters, false);
 };
 
-const onChangeRoomsNumber = () => {
+const onRoomsNumberChange = () => {
   const options = getCapacityOptions(roomsSelector.value);
 
   capacitySelector.innerHTML = '';
   capacitySelector.appendChild(options);
 };
 
-const onChangeHouseType = () => {
+const onHouseTypeChange = () => {
   const currentMinPrice = houseTypePrice[houseTypeSelector.value];
 
   priceInput.min = currentMinPrice;
@@ -84,20 +82,14 @@ const onTimeoutChange = () => {
   timeinSelector.value = timeoutSelector.value;
 };
 
-const onDragMarker = (addr) => {
-  address.value = addr;
+const setAddress = (lat, lng) => {
+  address.value = `${lat}, ${lng}`;
 };
 
-const initForm = () => {
-  const map = renderMap();
-  map.whenReady(()=>{
-    activatePage();
-  });
-};
 
-roomsSelector.addEventListener('change', onChangeRoomsNumber);
-houseTypeSelector.addEventListener('change', onChangeHouseType);
+roomsSelector.addEventListener('change', onRoomsNumberChange);
+houseTypeSelector.addEventListener('change', onHouseTypeChange);
 timeinSelector.addEventListener('change', onTimeinChange);
 timeoutSelector.addEventListener('change', onTimeoutChange);
 
-export {deactivatePage, onChangeRoomsNumber, onChangeHouseType, initForm, onDragMarker};
+export {deactivatePage, onRoomsNumberChange, onHouseTypeChange, activateForm, setAddress};

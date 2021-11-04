@@ -1,12 +1,13 @@
 import {createNewOffer} from './data.js';
 import {generateCard} from './generateElems.js';
-import {deactivatePage, onChangeRoomsNumber, onChangeHouseType, initForm} from './form.js';
-import {createAdvertMarker} from './map.js';
+import {deactivatePage, onRoomsNumberChange, onHouseTypeChange, activateForm} from './form.js';
+import {createAdvertMarker, createMap} from './map.js';
 
 deactivatePage();
 
-const createOfferList = (start, amount) => {
+const createOfferList = (amount) => {
   const offersStruct = [];
+  const start = 1;
 
   for (let idx = start; idx <= amount; idx++) {
     offersStruct.push(createNewOffer(idx));
@@ -15,12 +16,19 @@ const createOfferList = (start, amount) => {
   return offersStruct;
 };
 
-const offers = createOfferList(1, 10);
+const offers = createOfferList(10);
+const map = createMap();
 
 offers.forEach((offer) => {
-  createAdvertMarker(offer.offer.location, generateCard(offer));
+  const marker = createAdvertMarker(offer.offer.location);
+
+  marker.bindPopup(generateCard(offer)).openPopup();
+  marker.addTo(map);
 });
 
-onChangeRoomsNumber();
-onChangeHouseType();
-initForm();
+onRoomsNumberChange();
+onHouseTypeChange();
+
+map.whenReady(()=>{
+  activateForm();
+});

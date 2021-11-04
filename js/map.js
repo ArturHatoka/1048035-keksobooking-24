@@ -1,4 +1,4 @@
-import {onDragMarker} from './form.js';
+import {setAddress} from './form.js';
 
 const startCoords = [35.6895000, 139.6917100];
 const layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
@@ -21,32 +21,31 @@ const createSelectMarker = () => {
   const selectMarker = new L.marker(startCoords, selectMarkerOptions);
 
   selectMarker.addEventListener('moveend', (e) => {
-    onDragMarker(`${e.target._latlng.lat.toFixed(5)}, ${e.target._latlng.lng.toFixed(5)}`);
+    setAddress(e.target._latlng.lat.toFixed(5), e.target._latlng.lng.toFixed(5));
   });
 
   selectMarker.addTo(map);
 };
 
-const createAdvertMarker = (coords, offer) => {
+const createAdvertMarker = (coords) => {
   const icon = L.icon({
-    iconUrl: '/img/pin.svg',
+    iconUrl: './img/pin.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
   });
   const markerOptions = {
     icon: icon,
   };
-  const marker = new L.marker([coords.lat, coords.lng], markerOptions);
-  marker.bindPopup(offer).openPopup();
-  marker.addTo(map);
+
+  return new L.marker([coords.lat, coords.lng], markerOptions);
 };
 
-const renderMap = () => {
-  onDragMarker(`${startCoords[0]}, ${startCoords[1]}`);
+const createMap = () => {
+  setAddress(`${startCoords[0]}, ${startCoords[1]}`);
   createSelectMarker();
   map.addLayer(layer);
 
   return map;
 };
 
-export {renderMap, createAdvertMarker};
+export {createMap, createAdvertMarker};
