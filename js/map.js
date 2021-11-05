@@ -1,4 +1,5 @@
 import {setAddress} from './form.js';
+import {generateCard} from './generateElems.js';
 
 const startCoords = [35.6895000, 139.6917100];
 const layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
@@ -24,7 +25,7 @@ const createSelectMarker = () => {
     setAddress(e.target._latlng.lat.toFixed(5), e.target._latlng.lng.toFixed(5));
   });
 
-  selectMarker.addTo(map);
+  return selectMarker;
 };
 
 const createAdvertMarker = (coords) => {
@@ -41,11 +42,22 @@ const createAdvertMarker = (coords) => {
 };
 
 const createMap = () => {
+  const selectMarker = createSelectMarker();
+
   setAddress(`${startCoords[0]}, ${startCoords[1]}`);
-  createSelectMarker();
+  selectMarker.addTo(map);
   map.addLayer(layer);
 
   return map;
 };
 
-export {createMap, createAdvertMarker};
+const generateMarkers = (offers) => {
+  offers.forEach((offer) => {
+    const marker = createAdvertMarker(offer.offer.location);
+
+    marker.bindPopup(generateCard(offer)).openPopup();
+    marker.addTo(map);
+  });
+};
+
+export {createMap, createAdvertMarker, generateMarkers};

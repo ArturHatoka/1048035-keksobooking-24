@@ -45,16 +45,15 @@ const createGallery = (data) => {
 };
 
 const generateCard = (data) => {
-  const templateCard = document.querySelector('#card').content.cloneNode(true);
-  const popup = templateCard.querySelector('.popup');
-  const title = templateCard.querySelector('.popup__title');
-  const address = templateCard.querySelector('.popup__text--address');
-  const price = templateCard.querySelector('.popup__text--price');
-  const type = templateCard.querySelector('.popup__type');
-  const capacity = templateCard.querySelector('.popup__text--capacity');
-  const time = templateCard.querySelector('.popup__text--time');
-  const description = templateCard.querySelector('.popup__description');
-  const avatar = templateCard.querySelector('.popup__avatar');
+  const popup = document.querySelector('#card').content.querySelector('.popup').cloneNode(true);
+  const title = popup.querySelector('.popup__title');
+  const address = popup.querySelector('.popup__text--address');
+  const price = popup.querySelector('.popup__text--price');
+  const type = popup.querySelector('.popup__type');
+  const capacity = popup.querySelector('.popup__text--capacity');
+  const time = popup.querySelector('.popup__text--time');
+  const description = popup.querySelector('.popup__description');
+  const avatar = popup.querySelector('.popup__avatar');
 
   const gallery = createGallery(data.offer.photos);
   const features = createFeatures(data.offer.features);
@@ -82,7 +81,7 @@ const generateCard = (data) => {
     description.classList.add('hide');
   }
 
-  return templateCard;
+  return popup;
 };
 
 export {generateCard};
