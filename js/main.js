@@ -1,26 +1,26 @@
 import {createNewOffer} from './data.js';
-import {generateCard} from './generateElems.js';
-import {deactivatePage, activatePage, onChangeRoomsNumber, onChangeHouseType} from './form.js';
+import {deactivatePage, onRoomsNumberChange, onHouseTypeChange, activateForm} from './form.js';
+import {createMap, generateMarkers} from './map.js';
 
 deactivatePage();
 
-const createOfferList = (start, amount) => {
+const createOfferList = (amount) => {
   const offersStruct = [];
 
-  for (let idx = start; idx <= amount; idx++) {
-
+  for (let idx = 1; idx <= amount; idx++) {
     offersStruct.push(createNewOffer(idx));
   }
 
   return offersStruct;
 };
 
-const offers = createOfferList(1, 10);
-const card = generateCard(offers[0]);
+const offers = createOfferList(10);
+const map = createMap();
 
-document.querySelector('#map-canvas').appendChild(card);
+onRoomsNumberChange();
+onHouseTypeChange();
+generateMarkers(offers);
 
-onChangeRoomsNumber();
-onChangeHouseType();
-activatePage();
-
+map.whenReady(()=>{
+  activateForm();
+});

@@ -1,3 +1,5 @@
+import {startCoords} from './map.js';
+
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const roomsSelector = document.querySelector('#room_number');
@@ -6,6 +8,7 @@ const houseTypeSelector = document.querySelector('#type');
 const priceInput = document.querySelector('#price');
 const timeinSelector = document.querySelector('#timein');
 const timeoutSelector = document.querySelector('#timeout');
+const address = document.querySelector('#address');
 
 const houseTypePrice = {
   'bungalow': 0,
@@ -51,7 +54,7 @@ const deactivatePage = () => {
   changeActivityElements(mapFilters, 'disabled');
 };
 
-const activatePage = () => {
+const activateForm = () => {
   form.classList.remove('ad-form--disabled');
   mapFilters.classList.remove('map__filters--disabled');
 
@@ -59,31 +62,37 @@ const activatePage = () => {
   changeActivityElements(mapFilters, false);
 };
 
-const onChangeRoomsNumber = () => {
+const onRoomsNumberChange = () => {
   const options = getCapacityOptions(roomsSelector.value);
 
   capacitySelector.innerHTML = '';
   capacitySelector.appendChild(options);
 };
 
-const onChangeHouseType = () => {
+const onHouseTypeChange = () => {
   const currentMinPrice = houseTypePrice[houseTypeSelector.value];
 
   priceInput.min = currentMinPrice;
   priceInput.placeholder = currentMinPrice;
 };
 
-const onChangeTimein = () => {
+const onTimeinChange = () => {
   timeoutSelector.value = timeinSelector.value;
 };
 
-const onChangeTimeout = () => {
+const onTimeoutChange = () => {
   timeinSelector.value = timeoutSelector.value;
 };
 
-roomsSelector.addEventListener('change', onChangeRoomsNumber);
-houseTypeSelector.addEventListener('change', onChangeHouseType);
-timeinSelector.addEventListener('change', onChangeTimein);
-timeoutSelector.addEventListener('change', onChangeTimeout);
+const setAddress = (lat, lng) => {
+  address.value = `${lat}, ${lng}`;
+};
 
-export {deactivatePage, activatePage, onChangeRoomsNumber, onChangeHouseType};
+
+setAddress(startCoords[0], startCoords[1]);
+roomsSelector.addEventListener('change', onRoomsNumberChange);
+houseTypeSelector.addEventListener('change', onHouseTypeChange);
+timeinSelector.addEventListener('change', onTimeinChange);
+timeoutSelector.addEventListener('change', onTimeoutChange);
+
+export {deactivatePage, onRoomsNumberChange, onHouseTypeChange, activateForm, setAddress};
