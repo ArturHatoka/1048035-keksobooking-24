@@ -1,3 +1,5 @@
+import {startCoords} from './map.js';
+
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const roomsSelector = document.querySelector('#room_number');
@@ -87,6 +89,7 @@ const setAddress = (lat, lng) => {
 };
 
 
+setAddress(startCoords[0], startCoords[1]);
 roomsSelector.addEventListener('change', onRoomsNumberChange);
 houseTypeSelector.addEventListener('change', onHouseTypeChange);
 timeinSelector.addEventListener('change', onTimeinChange);

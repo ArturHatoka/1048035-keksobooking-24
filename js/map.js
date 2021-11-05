@@ -44,7 +44,6 @@ const createAdvertMarker = (coords) => {
 const createMap = () => {
   const selectMarker = createSelectMarker();
 
-  setAddress(`${startCoords[0]}, ${startCoords[1]}`);
   selectMarker.addTo(map);
   map.addLayer(layer);
 
@@ -60,4 +59,4 @@ const generateMarkers = (offers) => {
   });
 };
 
-export {createMap, createAdvertMarker, generateMarkers};
+export {createMap, createAdvertMarker, generateMarkers, startCoords};
