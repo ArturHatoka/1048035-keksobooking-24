@@ -1,4 +1,5 @@
-import {startCoords} from './map.js';
+import {createSuccessModal, createErrModal} from './modal.js';
+import {setDefaultCoordsSelectMarker} from './map.js';
 
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
@@ -9,6 +10,10 @@ const priceInput = document.querySelector('#price');
 const timeinSelector = document.querySelector('#timein');
 const timeoutSelector = document.querySelector('#timeout');
 const address = document.querySelector('#address');
+const submit = document.querySelector('.ad-form__submit');
+const clear = document.querySelector('.ad-form__reset');
+const startCoords = [35.6895000, 139.6917100];
+const formAPI = 'https://24.javascript.pages.academy/keksobooking1';
 
 const houseTypePrice = {
   'bungalow': 0,
@@ -46,7 +51,7 @@ const changeActivityElements = (formWrap, activity) => {
   formWrap.disabled = activity;
 };
 
-const deactivatePage = () => {
+const deactivateForm = () => {
   form.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
 
@@ -88,11 +93,46 @@ const setAddress = (lat, lng) => {
   address.value = `${lat}, ${lng}`;
 };
 
+const onFormSubmit = (e) => {
+  if (form.checkValidity()){
+    e.preventDefault();
+    const formData = new FormData(form);
 
+    fetch(formAPI, {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => {
+        if (res.status === 200){
+          document.body.appendChild(createSuccessModal());
+        } else {
+          document.body.appendChild(createErrModal());
+        }
+      })
+      .catch(() => {
+        document.body.appendChild(createErrModal());
+      });
+  }
+};
+
+const clearForm = () => {
+  form.reset();
+  setAddress(startCoords[0], startCoords[1]);
+  setDefaultCoordsSelectMarker();
+};
+
+onRoomsNumberChange();
+onHouseTypeChange();
 setAddress(startCoords[0], startCoords[1]);
+
 roomsSelector.addEventListener('change', onRoomsNumberChange);
 houseTypeSelector.addEventListener('change', onHouseTypeChange);
 timeinSelector.addEventListener('change', onTimeinChange);
 timeoutSelector.addEventListener('change', onTimeoutChange);
+submit.addEventListener('click', onFormSubmit);
+clear.addEventListener('click', (e) => {
+  e.preventDefault();
+  clearForm();
+});
 
-export {deactivatePage, onRoomsNumberChange, onHouseTypeChange, activateForm, setAddress};
+export {deactivateForm, activateForm, setAddress, clearForm};
