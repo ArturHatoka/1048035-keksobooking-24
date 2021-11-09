@@ -1,15 +1,12 @@
-import {clearForm} from './form.js';
-
 const templateMapModal = document.querySelector('#modal').content;
 const templateSuccessModal = document.querySelector('#success').content;
 const templateErrModal = document.querySelector('#error').content;
 
 const createMapModal = () => {
   const modal = templateMapModal.cloneNode(true);
-  const modalWrap = document.querySelector('.modal');
 
   modal.querySelector('.modal__button').addEventListener('click', ()=>{
-    modalWrap.remove();
+    document.querySelector('.modal').remove();
   });
 
   return modal;
@@ -21,17 +18,22 @@ const createSuccessModal = () => {
 
   successWrap.addEventListener('click', ()=>{
     successWrap.remove();
-    clearForm();
   });
 
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape'){
       successWrap.remove();
-      clearForm();
     }
   });
 
   return success;
+};
+
+const onEscKeydown = (e) => {
+  if (e.key === 'Escape'){
+    document.querySelector('.error').remove();
+    window.removeEventListener('keydown', onEscKeydown);
+  }
 };
 
 const createErrModal = () => {
@@ -42,11 +44,7 @@ const createErrModal = () => {
     errWrap.remove();
   });
 
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape'){
-      errWrap.remove();
-    }
-  });
+  window.addEventListener('keydown', onEscKeydown);
 
   return err;
 };

@@ -57,15 +57,13 @@ const createMap = () => {
 const markerGroup = L.layerGroup().addTo(map);
 
 const generateMarkers = (offers) => {
-  if (offers && offers.length){
-    markerGroup.clearLayers();
-    offers.forEach((offer) => {
-      const marker = createAdvertMarker(offer.location);
+  markerGroup.clearLayers();
+  offers.forEach((offer) => {
+    const marker = createAdvertMarker(offer.location);
 
-      marker.bindPopup(generateCard(offer)).openPopup();
-      marker.addTo(markerGroup);
-    });
-  }
+    marker.bindPopup(generateCard(offer)).openPopup();
+    marker.addTo(markerGroup);
+  });
 };
 
 export {createMap, createAdvertMarker, generateMarkers, setDefaultCoordsSelectMarker};
