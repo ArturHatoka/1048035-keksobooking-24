@@ -22,7 +22,8 @@ const createSelectMarker = () => {
   const marker = new L.marker(startCoords, selectMarkerOptions);
 
   marker.addEventListener('moveend', (e) => {
-    const latlng = e.target._latlng
+    const latlng = e.target._latlng;
+    
     setAddress(latlng.lat.toFixed(5), latlng.lng.toFixed(5));
   });
 
