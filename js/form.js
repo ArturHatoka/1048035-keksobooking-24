@@ -1,4 +1,6 @@
-import {startCoords} from './map.js';
+import {setDefaultCoordsSelectMarker} from './map.js';
+import {fetchSendForm} from './http.js';
+import {createErrModal, createSuccessModal} from './modal.js';
 
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
@@ -9,6 +11,9 @@ const priceInput = document.querySelector('#price');
 const timeinSelector = document.querySelector('#timein');
 const timeoutSelector = document.querySelector('#timeout');
 const address = document.querySelector('#address');
+const submit = document.querySelector('.ad-form__submit');
+const clear = document.querySelector('.ad-form__reset');
+const startCoords = [35.6895000, 139.6917100];
 
 const houseTypePrice = {
   'bungalow': 0,
@@ -46,7 +51,7 @@ const changeActivityElements = (formWrap, activity) => {
   formWrap.disabled = activity;
 };
 
-const deactivatePage = () => {
+const deactivateForm = () => {
   form.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
 
@@ -88,11 +93,43 @@ const setAddress = (lat, lng) => {
   address.value = `${lat}, ${lng}`;
 };
 
+const clearForm = () => {
+  form.reset();
+  setAddress(startCoords[0], startCoords[1]);
+  setDefaultCoordsSelectMarker();
+};
+
+const onSendSuccess = () => {
+  document.body.appendChild(createSuccessModal());
+  clearForm();
+};
+
+const onSendError = () => {
+  document.body.appendChild(createErrModal());
+};
+
+const onFormSubmit = (e) => {
+  if (form.checkValidity()){
+    e.preventDefault();
+    const formData = new FormData(form);
+    fetchSendForm(formData, onSendSuccess, onSendError);
+  }
+};
+
+capacitySelector.appendChild(getCapacityOptions(roomsSelector.value));
+priceInput.min = houseTypePrice[houseTypeSelector.value];
+priceInput.placeholder = houseTypePrice[houseTypeSelector.value];
 
 setAddress(startCoords[0], startCoords[1]);
+
 roomsSelector.addEventListener('change', onRoomsNumberChange);
 houseTypeSelector.addEventListener('change', onHouseTypeChange);
 timeinSelector.addEventListener('change', onTimeinChange);
 timeoutSelector.addEventListener('change', onTimeoutChange);
+submit.addEventListener('click', onFormSubmit);
+clear.addEventListener('click', (e) => {
+  e.preventDefault();
+  clearForm();
+});
 
-export {deactivatePage, onRoomsNumberChange, onHouseTypeChange, activateForm, setAddress};
+export {deactivateForm, activateForm, setAddress, clearForm};

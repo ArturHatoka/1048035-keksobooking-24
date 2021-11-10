@@ -1,3 +1,5 @@
+const template = document.querySelector('#card').content.querySelector('.popup');
+
 const types = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -10,13 +12,11 @@ const createFeatures = (data) => {
   const featuresWrapper = document.createElement('ul');
   featuresWrapper.className = 'popup__features';
 
-  if (data.length){
-    data.forEach((el) => {
-      const feature = document.createElement('li');
-      feature.className = (`popup__feature popup__feature--${el}`);
-      featuresWrapper.appendChild(feature);
-    });
-  }
+  data.forEach((el) => {
+    const feature = document.createElement('li');
+    feature.className = (`popup__feature popup__feature--${el}`);
+    featuresWrapper.appendChild(feature);
+  });
 
   return featuresWrapper;
 };
@@ -45,7 +45,7 @@ const createGallery = (data) => {
 };
 
 const generateCard = (data) => {
-  const popup = document.querySelector('#card').content.querySelector('.popup').cloneNode(true);
+  const popup = template.cloneNode(true);
   const title = popup.querySelector('.popup__title');
   const address = popup.querySelector('.popup__text--address');
   const price = popup.querySelector('.popup__text--price');
@@ -55,8 +55,13 @@ const generateCard = (data) => {
   const description = popup.querySelector('.popup__description');
   const avatar = popup.querySelector('.popup__avatar');
 
-  const gallery = createGallery(data.offer.photos);
-  const features = createFeatures(data.offer.features);
+  if (data.offer.photos && data.offer.photos.length){
+    popup.appendChild(createGallery(data.offer.photos));
+  }
+
+  if (data.offer.features && data.offer.features.length){
+    popup.insertBefore(createFeatures(data.offer.features), description);
+  }
 
   title.textContent = data.offer.title;
   address.textContent = data.offer.address;
@@ -66,14 +71,6 @@ const generateCard = (data) => {
   time.textContent = `Заезд после ${data.offer.checkin}, выезд до ${data.offer.checkout}`;
   type.textContent = types[data.offer.type];
   avatar.src = data.author.avatar;
-
-  if (features.hasChildNodes()){
-    popup.insertBefore(features, description);
-  }
-
-  if (gallery.hasChildNodes()){
-    popup.appendChild(gallery);
-  }
 
   if (data.offer.description){
     description.textContent = data.offer.description;

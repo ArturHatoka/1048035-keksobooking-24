@@ -72,7 +72,7 @@
     <!-- Форма объявления -->
     <section class="notice">
       <h2 class="notice__title">Ваше объявление</h2>
-      <form class="ad-form" method="post" action="https://24.javascript.pages.academy/keksobooking" enctype="multipart/form-data" autocomplete="off">
+      <form class="ad-form" autocomplete="off">
         <fieldset class="ad-form-header">
           <legend class="ad-form-header__title">Ваша фотография (для карты)</legend>
           <div class="ad-form-header__upload">
@@ -212,6 +212,14 @@
     <div class="error">
       <p class="error__message">Ошибка размещения объявления</p>
       <button type="button" class="error__button">Попробовать снова</button>
+    </div>
+  </template>
+
+  <!-- Модалка с уведомлением -->
+  <template id="modal">
+    <div class="modal">
+      <p class="modal__message">Ошибка загрузки объявлений рядом</p>
+      <button type="button" class="modal__button">OK</button>
     </div>
   </template>
   <script src="leaflet/leaflet.js"></script>

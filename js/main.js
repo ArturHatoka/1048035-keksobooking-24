@@ -1,26 +1,10 @@
-import {createNewOffer} from './data.js';
-import {deactivatePage, onRoomsNumberChange, onHouseTypeChange, activateForm} from './form.js';
-import {createMap, generateMarkers} from './map.js';
+import {fetchOfferListData, onSuccess, onError} from './http.js';
+import {createMap} from './map.js';
+import {deactivateForm, activateForm} from './form.js';
 
-deactivatePage();
+deactivateForm();
 
-const createOfferList = (amount) => {
-  const offersStruct = [];
-
-  for (let idx = 1; idx <= amount; idx++) {
-    offersStruct.push(createNewOffer(idx));
-  }
-
-  return offersStruct;
-};
-
-const offers = createOfferList(10);
-const map = createMap();
-
-onRoomsNumberChange();
-onHouseTypeChange();
-generateMarkers(offers);
-
-map.whenReady(()=>{
+createMap().whenReady(()=>{
   activateForm();
+  fetchOfferListData(onSuccess, onError);
 });

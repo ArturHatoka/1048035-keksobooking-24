@@ -19,13 +19,19 @@ const createSelectMarker = () => {
     icon: selectIcon,
     draggable: true,
   };
-  const selectMarker = new L.marker(startCoords, selectMarkerOptions);
+  const marker = new L.marker(startCoords, selectMarkerOptions);
 
-  selectMarker.addEventListener('moveend', (e) => {
+  marker.addEventListener('moveend', (e) => {
     setAddress(e.target._latlng.lat.toFixed(5), e.target._latlng.lng.toFixed(5));
   });
 
-  return selectMarker;
+  return marker;
+};
+
+const selectMarker = createSelectMarker();
+
+const setDefaultCoordsSelectMarker = () => {
+  selectMarker.setLatLng(startCoords);
 };
 
 const createAdvertMarker = (coords) => {
@@ -42,21 +48,22 @@ const createAdvertMarker = (coords) => {
 };
 
 const createMap = () => {
-  const selectMarker = createSelectMarker();
-
   selectMarker.addTo(map);
   map.addLayer(layer);
 
   return map;
 };
 
+const markerGroup = L.layerGroup().addTo(map);
+
 const generateMarkers = (offers) => {
+  markerGroup.clearLayers();
   offers.forEach((offer) => {
-    const marker = createAdvertMarker(offer.offer.location);
+    const marker = createAdvertMarker(offer.location);
 
     marker.bindPopup(generateCard(offer)).openPopup();
-    marker.addTo(map);
+    marker.addTo(markerGroup);
   });
 };
 
-export {createMap, createAdvertMarker, generateMarkers, startCoords};
+export {createMap, createAdvertMarker, generateMarkers, setDefaultCoordsSelectMarker};
