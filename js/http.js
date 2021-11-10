@@ -4,22 +4,22 @@ import {createMapModal} from './modal.js';
 const FETCH_DATA = 'https://24.javascript.pages.academy/keksobooking/data';
 const FORM_API = 'https://24.javascript.pages.academy/keksobooking';
 
-const fetchOfferListData = (success, err) => {
+const fetchOfferListData = (onSuccess, onError) => {
   fetch(FETCH_DATA)
     .then((response) => response.json())
     .then((data) => {
-      success(data);
+      onSuccess(data);
     })
     .catch(() => {
-      err();
+      onError();
     });
 };
 
-const onSuccess = (data) => {
+const onSuccessFetchOffer = (data) => {
   generateMarkers(data);
 };
 
-const onError = () => {
+const onErrorFetchOffer = () => {
   document.body.appendChild(createMapModal());
 };
 
@@ -40,4 +40,4 @@ const fetchSendForm = (formData, success, err) => {
     });
 };
 
-export {fetchOfferListData, onSuccess, onError, fetchSendForm};
+export {fetchOfferListData, onSuccessFetchOffer, onErrorFetchOffer, fetchSendForm};
