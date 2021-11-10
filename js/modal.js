@@ -12,39 +12,33 @@ const createMapModal = () => {
   return modal;
 };
 
-const createSuccessModal = () => {
-  const success = templateSuccessModal.cloneNode(true);
-  const successWrap = success.querySelector('.success');
-
-  successWrap.addEventListener('click', ()=>{
-    successWrap.remove();
-  });
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape'){
-      successWrap.remove();
-    }
-  });
-
-  return success;
-};
-
 const onEscKeydown = (e) => {
   if (e.key === 'Escape'){
-    document.querySelector('.error').remove();
+    document.querySelector('.modal--info').remove();
     window.removeEventListener('keydown', onEscKeydown);
   }
 };
 
-const createErrModal = () => {
-  const err = templateErrModal.cloneNode(true);
-  const errWrap = err.querySelector('.error');
-
-  errWrap.addEventListener('click', () => {
-    errWrap.remove();
+const addModalListener = (modalWrapper) => {
+  modalWrapper.addEventListener('click', ()=>{
+    modalWrapper.remove();
   });
 
   window.addEventListener('keydown', onEscKeydown);
+};
+
+const createSuccessModal = () => {
+  const success = templateSuccessModal.cloneNode(true);
+
+  addModalListener(success.querySelector('.success'));
+
+  return success;
+};
+
+const createErrModal = () => {
+  const err = templateErrModal.cloneNode(true);
+
+  addModalListener(err.querySelector('.error'));
 
   return err;
 };
