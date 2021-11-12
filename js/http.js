@@ -5,7 +5,7 @@ const fetchOfferListData = (onSuccess, onError) => {
   fetch(FETCH_DATA)
     .then((response) => {
       if (response.status === 200){
-        return response.json()
+        return response.json();
       } else {
         onError();
       }

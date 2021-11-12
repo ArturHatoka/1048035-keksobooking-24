@@ -54,11 +54,11 @@ const generateCard = (data) => {
   const description = popup.querySelector('.popup__description');
   const avatar = popup.querySelector('.popup__avatar');
 
-  if (data.offer.photos?.length){
+  if (data.offer.photos && data.offer.photos.length){
     popup.appendChild(createGallery(data.offer.photos));
   }
 
-  if (data.offer.features?.length){
+  if (data.offer.features && data.offer.features.length){
     popup.insertBefore(createFeatures(data.offer.features), description);
   }
 
@@ -71,7 +71,7 @@ const generateCard = (data) => {
   type.textContent = types[data.offer.type];
   avatar.src = data.author.avatar;
 
-  if (data.offer?.description){
+  if (data.offer && data.offer.description){
     description.textContent = data.offer.description;
   } else {
     description.classList.add('hide');

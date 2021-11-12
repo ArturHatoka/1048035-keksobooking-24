@@ -1,7 +1,7 @@
 import {fetchOfferListData} from './http.js';
 import {createMap, generateMarkers} from './map.js';
 import {deactivateForm, activateForm} from './form.js';
-import {createMapModal} from "./modal.js";
+import {createMapModal} from './modal.js';
 
 deactivateForm();
 
