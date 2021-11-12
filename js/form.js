@@ -15,7 +15,7 @@ const submit = document.querySelector('.ad-form__submit');
 const clear = document.querySelector('.ad-form__reset');
 const startCoords = [35.6895000, 139.6917100];
 
-const houseTypePrice = {
+const houseTypePrices = {
   'bungalow': 0,
   'flat': 1000,
   'hotel': 3000,
@@ -75,7 +75,7 @@ const onRoomsNumberChange = () => {
 };
 
 const onHouseTypeChange = () => {
-  const currentMinPrice = houseTypePrice[houseTypeSelector.value];
+  const currentMinPrice = houseTypePrices[houseTypeSelector.value];
 
   priceInput.min = currentMinPrice;
   priceInput.placeholder = currentMinPrice;
@@ -95,6 +95,7 @@ const setAddress = (lat, lng) => {
 
 const clearForm = () => {
   form.reset();
+  priceInput.placeholder = houseTypePrices[houseTypeSelector.value];
   setAddress(startCoords[0], startCoords[1]);
   setDefaultCoordsSelectMarker();
 };
@@ -117,8 +118,8 @@ const onFormSubmit = (e) => {
 };
 
 capacitySelector.appendChild(getCapacityOptions(roomsSelector.value));
-priceInput.min = houseTypePrice[houseTypeSelector.value];
-priceInput.placeholder = houseTypePrice[houseTypeSelector.value];
+priceInput.min = houseTypePrices[houseTypeSelector.value];
+priceInput.placeholder = houseTypePrices[houseTypeSelector.value];
 
 setAddress(startCoords[0], startCoords[1]);
 
