@@ -21,22 +21,22 @@ const createFeatures = (data) => {
   return featuresWrapper;
 };
 
-const createImgTemplate = () => {
+const createImgTemplate = (src) => {
   const imgTemplate = document.createElement('img');
   imgTemplate.alt = 'Фотография жилья';
   imgTemplate.className = 'popup__photo';
+  imgTemplate.src = src;
 
   return imgTemplate;
 };
 
 const createGallery = (data) => {
   const gallery = document.createElement('div');
-  const imgTemplate = createImgTemplate();
   gallery.className = 'popup__photos';
 
   data.forEach((imgSrc) => {
-    const img = imgTemplate.cloneNode(false);
-    img.src = imgSrc;
+    const img = createImgTemplate(imgSrc);
+
     gallery.appendChild(img);
   });
 

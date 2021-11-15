@@ -19,12 +19,6 @@ const price = document.querySelector('#housing-price');
 const rooms = document.querySelector('#housing-rooms');
 const guests = document.querySelector('#housing-guests');
 const features = document.querySelector('#housing-features');
-const wifi = features.querySelector('#filter-wifi');
-const dishwasher = features.querySelector('#filter-dishwasher');
-const parking = features.querySelector('#filter-parking');
-const washer = features.querySelector('#filter-washer');
-const elevator = features.querySelector('#filter-elevator');
-const conditioner = features.querySelector('#filter-conditioner');
 
 let computedOffers = [];
 const allFilters = [type, price, rooms, guests, features];
@@ -41,9 +35,9 @@ const getCheckedFeatures = () => {
   return checkedFeatures;
 };
 
-const contains = (where, what) => {
-  for(let i=0; i<what.length; i++){
-    if(where.indexOf(what[i]) === -1) {
+const containsFeature = (offerFeatures, checkedFeatures) => {
+  for(let i=0; i<checkedFeatures.length; i++){
+    if(offerFeatures.indexOf(checkedFeatures[i]) === -1) {
       return false;
     }
   }
@@ -51,43 +45,66 @@ const contains = (where, what) => {
   return true;
 };
 
+const checkType = (offers) => {
+  return offers.filter((advert) => advert.offer.type  === type.value);
+};
+
+const checkPrice = (offers) => {
+  let filteredOffers = [];
+
+  if (price.value === LOW_PRICE.key) {
+    filteredOffers = offers.filter((advert) => advert.offer.price <= LOW_PRICE.price);
+  } else if (price.value === MIDDLE_PRICE.key) {
+    filteredOffers = offers.filter((advert) => (advert.offer.price >= LOW_PRICE.price && advert.offer.price <= HIGH_PRICE.price));
+  } else if (price.value === HIGH_PRICE.key) {
+    filteredOffers = offers.filter((advert) => advert.offer.price >= HIGH_PRICE.price);
+  }
+
+  return filteredOffers;
+};
+
+const checkRooms = (offers) => {
+  return offers.filter((advert) => advert.offer.rooms  === Number(rooms.value));
+};
+
+const checkGuests = (offers) => {
+  return offers.filter((advert) => advert.offer.guests  === Number(guests.value));
+};
+
+const checkFeatures = (offers, checkedFeatures) => {
+  return offers.reduce((arr, el) => {
+    if (el.offer.features && el.offer.features.length){
+
+      if(containsFeature(el.offer.features, checkedFeatures)){
+        arr.push(el);
+      }
+    }
+    return arr;
+  }, []);
+};
+
 const onFilterChange = () => {
   let filteredOffers = [...computedOffers];
+  const checkedFeatures = getCheckedFeatures();
 
   if (type.value !== ANY) {
-    filteredOffers = filteredOffers.filter((advert) => advert.offer.type  === type.value);
+    filteredOffers = checkType(filteredOffers);
   }
 
   if (price.value !== ANY) {
-    if (price.value === LOW_PRICE.key) {
-      filteredOffers = filteredOffers.filter((advert) => advert.offer.price <= LOW_PRICE.price);
-    } else if (price.value === MIDDLE_PRICE.key) {
-      filteredOffers = filteredOffers.filter((advert) => (advert.offer.price >= LOW_PRICE.price && advert.offer.price <= HIGH_PRICE.price));
-    } else if (price.value === HIGH_PRICE.key) {
-      filteredOffers = filteredOffers.filter((advert) => advert.offer.price >= HIGH_PRICE.price);
-    }
+    filteredOffers = checkPrice(filteredOffers);
   }
 
   if (rooms.value !== ANY) {
-    filteredOffers = filteredOffers.filter((advert) => advert.offer.rooms  === Number(rooms.value));
+    filteredOffers = checkRooms(filteredOffers);
   }
 
   if (guests.value !== ANY) {
-    filteredOffers = filteredOffers.filter((advert) => advert.offer.guests  === Number(guests.value));
+    filteredOffers = checkGuests(filteredOffers);
   }
 
-  if (wifi.checked || dishwasher.checked || parking.checked || washer.checked || elevator.checked || conditioner.checked) {
-    const checkedFeatures = getCheckedFeatures();
-
-    filteredOffers = filteredOffers.reduce((arr, el) => {
-      if (el.offer.features && el.offer.features.length){
-
-        if(contains(el.offer.features, checkedFeatures)){
-          arr.push(el);
-        }
-      }
-      return arr;
-    }, []);
+  if (checkedFeatures.length){
+    filteredOffers = checkFeatures(filteredOffers, checkedFeatures);
   }
 
   if (filteredOffers.length > MAX_COUNT) {
