@@ -45,9 +45,7 @@ const containsFeature = (offerFeatures, checkedFeatures) => {
   return true;
 };
 
-const checkType = (offers) => {
-  return offers.filter((advert) => advert.offer.type  === type.value);
-};
+const checkType = (offers) => offers.filter((advert) => advert.offer.type  === type.value);
 
 const checkPrice = (offers) => {
   let filteredOffers = [];
@@ -63,25 +61,19 @@ const checkPrice = (offers) => {
   return filteredOffers;
 };
 
-const checkRooms = (offers) => {
-  return offers.filter((advert) => advert.offer.rooms  === Number(rooms.value));
-};
+const checkRooms = (offers) => offers.filter((advert) => advert.offer.rooms  === Number(rooms.value));
 
-const checkGuests = (offers) => {
-  return offers.filter((advert) => advert.offer.guests  === Number(guests.value));
-};
+const checkGuests = (offers) => offers.filter((advert) => advert.offer.guests  === Number(guests.value));
 
-const checkFeatures = (offers, checkedFeatures) => {
-  return offers.reduce((arr, el) => {
-    if (el.offer.features && el.offer.features.length){
+const checkFeatures = (offers, checkedFeatures) => offers.reduce((arr, el) => {
+  if (el.offer.features && el.offer.features.length){
 
-      if(containsFeature(el.offer.features, checkedFeatures)){
-        arr.push(el);
-      }
+    if(containsFeature(el.offer.features, checkedFeatures)){
+      arr.push(el);
     }
-    return arr;
-  }, []);
-};
+  }
+  return arr;
+}, []);
 
 const onFilterChange = () => {
   let filteredOffers = [...computedOffers];
