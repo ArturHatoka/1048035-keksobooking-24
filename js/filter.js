@@ -2,6 +2,18 @@ import {generateMarkers} from './map.js';
 import {debounce} from './utils/debounce.js';
 
 const MAX_COUNT = 10;
+const LOW_PRICE = {
+  key: 'low',
+  price: 10000,
+};
+const MIDDLE_PRICE = {
+  key: 'middle',
+};
+const HIGH_PRICE = {
+  key: 'high',
+  price: 50000,
+};
+const ANY = 'any';
 const type = document.querySelector('#housing-type');
 const price = document.querySelector('#housing-price');
 const rooms = document.querySelector('#housing-rooms');
@@ -14,10 +26,7 @@ const washer = features.querySelector('#filter-washer');
 const elevator = features.querySelector('#filter-elevator');
 const conditioner = features.querySelector('#filter-conditioner');
 
-const lowPrice = 10000;
-const highPrice = 50000;
 let computedOffers = [];
-const allFeatures = [wifi, dishwasher, parking, washer, elevator, conditioner];
 const allFilters = [type, price, rooms, guests, features];
 
 const getMaxOffers = (offers) => offers.slice(0, MAX_COUNT);
@@ -25,10 +34,8 @@ const getMaxOffers = (offers) => offers.slice(0, MAX_COUNT);
 const getCheckedFeatures = () => {
   const checkedFeatures = [];
 
-  allFeatures.forEach((feature) => {
-    if (feature.checked){
-      checkedFeatures.push(feature.value);
-    }
+  features.querySelectorAll('input:checked').forEach((checkedEl) => {
+    checkedFeatures.push(checkedEl.value);
   });
 
   return checkedFeatures;
@@ -47,25 +54,25 @@ const contains = (where, what) => {
 const onFilterChange = () => {
   let filteredOffers = [...computedOffers];
 
-  if (type.value !== 'any') {
+  if (type.value !== ANY) {
     filteredOffers = filteredOffers.filter((advert) => advert.offer.type  === type.value);
   }
 
-  if (price.value !== 'any') {
-    if (price.value === 'low') {
-      filteredOffers = filteredOffers.filter((advert) => advert.offer.price <= lowPrice);
-    } else if (price.value === 'middle') {
-      filteredOffers = filteredOffers.filter((advert) => (advert.offer.price >= lowPrice && advert.offer.price <= highPrice));
-    } else if (price.value === 'high') {
-      filteredOffers = filteredOffers.filter((advert) => advert.offer.price >= highPrice);
+  if (price.value !== ANY) {
+    if (price.value === LOW_PRICE.key) {
+      filteredOffers = filteredOffers.filter((advert) => advert.offer.price <= LOW_PRICE.price);
+    } else if (price.value === MIDDLE_PRICE.key) {
+      filteredOffers = filteredOffers.filter((advert) => (advert.offer.price >= LOW_PRICE.price && advert.offer.price <= HIGH_PRICE.price));
+    } else if (price.value === HIGH_PRICE.key) {
+      filteredOffers = filteredOffers.filter((advert) => advert.offer.price >= HIGH_PRICE.price);
     }
   }
 
-  if (rooms.value !== 'any') {
+  if (rooms.value !== ANY) {
     filteredOffers = filteredOffers.filter((advert) => advert.offer.rooms  === Number(rooms.value));
   }
 
-  if (guests.value !== 'any') {
+  if (guests.value !== ANY) {
     filteredOffers = filteredOffers.filter((advert) => advert.offer.guests  === Number(guests.value));
   }
 

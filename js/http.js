@@ -3,13 +3,7 @@ const FORM_API = 'https://24.javascript.pages.academy/keksobooking';
 
 const fetchOfferListData = (onSuccess, onError) => {
   fetch(FETCH_DATA)
-    .then((response) => {
-      if (response.status === 200){
-        return response.json();
-      } else {
-        onError();
-      }
-    })
+    .then((response) => response.json())
     .then((data) => {
       onSuccess(data);
     })

@@ -7,7 +7,7 @@ const createMapModal = () => {
   const closeBtn = template.querySelector('.modal__button');
   const modal = template.querySelector('.modal');
 
-  closeBtn.addEventListener('click', ()=>{
+  closeBtn.addEventListener('click', () => {
     modal.remove();
   });
 
