@@ -86,9 +86,9 @@ const onFilterChange = () => {
   const checkedFeatures = getCheckedFeatures();
 
   let filteredOffers = computedOffers.filter((adv) => (
-    checkFeatures(adv, checkedFeatures) && checkGuests(adv)
-      && checkRooms(adv) && checkPrice(adv)
-      && checkType(adv)
+    checkFeatures(adv, checkedFeatures) && checkGuests(adv) &&
+    checkRooms(adv) && checkPrice(adv) &&
+    checkType(adv)
   ));
 
   if (filteredOffers.length > MAX_COUNT) {
