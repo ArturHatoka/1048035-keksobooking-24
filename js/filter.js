@@ -14,6 +14,7 @@ const HIGH_PRICE = {
   price: 50000,
 };
 const ANY = 'any';
+const filter = document.querySelector('#map-filter');
 const type = document.querySelector('#housing-type');
 const price = document.querySelector('#housing-price');
 const rooms = document.querySelector('#housing-rooms');
@@ -21,7 +22,6 @@ const guests = document.querySelector('#housing-guests');
 const features = document.querySelector('#housing-features');
 
 let computedOffers = [];
-const allFilters = [type, price, rooms, guests, features];
 
 const getMaxOffers = (offers) => offers.slice(0, MAX_COUNT);
 
@@ -35,69 +35,61 @@ const getCheckedFeatures = () => {
   return checkedFeatures;
 };
 
-const containsFeature = (offerFeatures, checkedFeatures) => {
-  for(let i=0; i<checkedFeatures.length; i++){
-    if(offerFeatures.indexOf(checkedFeatures[i]) === -1) {
-      return false;
-    }
+const checkType = (adv) => {
+  if (type.value !== ANY) {
+    return adv.offer.type  === type.value;
   }
-
   return true;
 };
 
-const checkType = (offers) => offers.filter((advert) => advert.offer.type  === type.value);
-
-const checkPrice = (offers) => {
-  let filteredOffers = [];
-
-  if (price.value === LOW_PRICE.key) {
-    filteredOffers = offers.filter((advert) => advert.offer.price <= LOW_PRICE.price);
-  } else if (price.value === MIDDLE_PRICE.key) {
-    filteredOffers = offers.filter((advert) => (advert.offer.price >= LOW_PRICE.price && advert.offer.price <= HIGH_PRICE.price));
-  } else if (price.value === HIGH_PRICE.key) {
-    filteredOffers = offers.filter((advert) => advert.offer.price >= HIGH_PRICE.price);
+const checkPrice = (adv) => {
+  if (price.value !== ANY) {
+    if (price.value === LOW_PRICE.key) {
+      return adv.offer.price <= LOW_PRICE.price;
+    } else if (price.value === MIDDLE_PRICE.key) {
+      return (adv.offer.price >= LOW_PRICE.price && adv.offer.price <= HIGH_PRICE.price);
+    } else if (price.value === HIGH_PRICE.key) {
+      return adv.offer.price >= HIGH_PRICE.price;
+    }
+    return false;
   }
-
-  return filteredOffers;
+  return true;
 };
 
-const checkRooms = (offers) => offers.filter((advert) => advert.offer.rooms  === Number(rooms.value));
-
-const checkGuests = (offers) => offers.filter((advert) => advert.offer.guests  === Number(guests.value));
-
-const checkFeatures = (offers, checkedFeatures) => offers.reduce((arr, el) => {
-  if (el.offer.features && el.offer.features.length){
-
-    if(containsFeature(el.offer.features, checkedFeatures)){
-      arr.push(el);
-    }
+const checkRooms = (adv) => {
+  if (rooms.value !== ANY) {
+    return adv.offer.rooms  === Number(rooms.value);
   }
-  return arr;
-}, []);
+  return true;
+};
+
+const checkGuests = (adv) => {
+  if (guests.value !== ANY) {
+    return adv.offer.guests === Number(guests.value);
+  }
+  return true;
+};
+
+const checkFeatures = (adv, checkedFeatures) => {
+  if (checkedFeatures.length) {
+    return [...checkedFeatures].every((feature) => {
+      if (adv.offer.features){
+        return adv.offer.features.includes(feature);
+      }
+      return false;
+    });
+  }
+  return true;
+};
 
 const onFilterChange = () => {
-  let filteredOffers = [...computedOffers];
   const checkedFeatures = getCheckedFeatures();
 
-  if (type.value !== ANY) {
-    filteredOffers = checkType(filteredOffers);
-  }
-
-  if (price.value !== ANY) {
-    filteredOffers = checkPrice(filteredOffers);
-  }
-
-  if (rooms.value !== ANY) {
-    filteredOffers = checkRooms(filteredOffers);
-  }
-
-  if (guests.value !== ANY) {
-    filteredOffers = checkGuests(filteredOffers);
-  }
-
-  if (checkedFeatures.length){
-    filteredOffers = checkFeatures(filteredOffers, checkedFeatures);
-  }
+  let filteredOffers = computedOffers.filter((adv) => (
+    checkFeatures(adv, checkedFeatures) && checkGuests(adv)
+      && checkRooms(adv) && checkPrice(adv)
+      && checkType(adv)
+  ));
 
   if (filteredOffers.length > MAX_COUNT) {
     filteredOffers = getMaxOffers(filteredOffers);
@@ -106,17 +98,11 @@ const onFilterChange = () => {
   generateMarkers(filteredOffers);
 };
 
-const setChangeToFilter = (filter) => {
-  filter.addEventListener('change', () => {
-    onFilterChange();
-  });
-};
-
 const filterOffers = (offers) => {
   computedOffers = offers;
 
-  allFilters.forEach((filter) => {
-    debounce(setChangeToFilter(filter));
+  filter.addEventListener('change', () => {
+    debounce(onFilterChange());
   });
 
   return getMaxOffers(computedOffers);
