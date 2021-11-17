@@ -21,10 +21,11 @@ const createFeatures = (data) => {
   return featuresWrapper;
 };
 
-const createImgTemplate = () => {
+const createImgTemplate = (src) => {
   const imgTemplate = document.createElement('img');
   imgTemplate.alt = 'Фотография жилья';
   imgTemplate.className = 'popup__photo';
+  imgTemplate.src = src;
 
   return imgTemplate;
 };
@@ -33,13 +34,11 @@ const createGallery = (data) => {
   const gallery = document.createElement('div');
   gallery.className = 'popup__photos';
 
-  const imgTemplate = createImgTemplate();
+  data.forEach((imgSrc) => {
+    const img = createImgTemplate(imgSrc);
 
-  for (const imgSrc of data){
-    const img = imgTemplate.cloneNode(false);
-    img.src = imgSrc;
     gallery.appendChild(img);
-  }
+  });
 
   return gallery;
 };
@@ -72,7 +71,7 @@ const generateCard = (data) => {
   type.textContent = types[data.offer.type];
   avatar.src = data.author.avatar;
 
-  if (data.offer.description){
+  if (data.offer && data.offer.description){
     description.textContent = data.offer.description;
   } else {
     description.classList.add('hide');

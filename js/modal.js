@@ -3,13 +3,15 @@ const templateSuccessModal = document.querySelector('#success').content;
 const templateErrModal = document.querySelector('#error').content;
 
 const createMapModal = () => {
-  const modal = templateMapModal.cloneNode(true);
+  const template = templateMapModal.cloneNode(true);
+  const closeBtn = template.querySelector('.modal__button');
+  const modal = template.querySelector('.modal');
 
-  modal.querySelector('.modal__button').addEventListener('click', ()=>{
-    document.querySelector('.modal').remove();
+  closeBtn.addEventListener('click', () => {
+    modal.remove();
   });
 
-  return modal;
+  return template;
 };
 
 const onEscKeydown = (e) => {

@@ -1,5 +1,5 @@
 import {setAddress} from './form.js';
-import {generateCard} from './generateElems.js';
+import {generateCard} from './baloon.js';
 
 const startCoords = [35.6895000, 139.6917100];
 const layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
@@ -22,9 +22,10 @@ const createSelectMarker = () => {
   const marker = new L.marker(startCoords, selectMarkerOptions);
 
   marker.addEventListener('moveend', (e) => {
-    const latlng = e.target._latlng;
+    const {lat, lng} = e.target._latlng;
+    const maxFloat = 5;
 
-    setAddress(latlng.lat.toFixed(5), latlng.lng.toFixed(5));
+    setAddress(lat.toFixed(maxFloat), lng.toFixed(maxFloat));
   });
 
   return marker;
