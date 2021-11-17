@@ -35,12 +35,7 @@ const getCheckedFeatures = () => {
   return checkedFeatures;
 };
 
-const checkType = (adv) => {
-  if (type.value !== ANY) {
-    return adv.offer.type  === type.value;
-  }
-  return true;
-};
+const checkType = (adv) => type.value === ANY || adv.offer.type  === type.value;
 
 const checkPrice = (adv) => {
   if (price.value !== ANY) {
@@ -56,44 +51,25 @@ const checkPrice = (adv) => {
   return true;
 };
 
-const checkRooms = (adv) => {
-  if (rooms.value !== ANY) {
-    return adv.offer.rooms  === Number(rooms.value);
-  }
-  return true;
-};
+const checkRooms = (adv) => rooms.value === ANY || adv.offer.rooms  === Number(rooms.value);
 
-const checkGuests = (adv) => {
-  if (guests.value !== ANY) {
-    return adv.offer.guests === Number(guests.value);
-  }
-  return true;
-};
+const checkGuests = (adv) => guests.value === ANY || adv.offer.guests === Number(guests.value);
 
-const checkFeatures = (adv, checkedFeatures) => {
+
+const checkFeatures = (adv) => {
+  const checkedFeatures = getCheckedFeatures();
   if (checkedFeatures.length) {
-    return [...checkedFeatures].every((feature) => {
-      if (adv.offer.features){
-        return adv.offer.features.includes(feature);
-      }
-      return false;
-    });
+    return [...checkedFeatures].every((feature) => adv.offer.features && adv.offer.features.includes(feature));
   }
   return true;
 };
 
 const onFilterChange = () => {
-  const checkedFeatures = getCheckedFeatures();
-
-  let filteredOffers = computedOffers.filter((adv) => (
-    checkFeatures(adv, checkedFeatures) && checkGuests(adv) &&
+  const filteredOffers = getMaxOffers(computedOffers.filter((adv) => (
+    checkFeatures(adv) && checkGuests(adv) &&
     checkRooms(adv) && checkPrice(adv) &&
     checkType(adv)
-  ));
-
-  if (filteredOffers.length > MAX_COUNT) {
-    filteredOffers = getMaxOffers(filteredOffers);
-  }
+  )));
 
   generateMarkers(filteredOffers);
 };
