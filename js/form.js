@@ -27,7 +27,7 @@ const getCapacityOptions = (roomsNumb) => {
   const options = document.createDocumentFragment();
 
   if(roomsNumb <= 3){
-    roomsNumb.forEach((numb, i) => {
+    for (let i = 1; i<=roomsNumb; i++){
       const option = document.createElement('option');
       const ending = i === 1 ? 'я' : 'ей';
 
@@ -35,7 +35,7 @@ const getCapacityOptions = (roomsNumb) => {
       option.textContent = `для ${i} гост${ending}`;
 
       options.appendChild(option);
-    });
+    }
   } else {
     const option = document.createElement('option');
     option.value = '0';
