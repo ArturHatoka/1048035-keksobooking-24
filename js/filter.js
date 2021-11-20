@@ -64,7 +64,7 @@ const checkFeatures = (adv) => {
   return true;
 };
 
-const onFilterChange = () => {
+const onFilterChange =  debounce(() => {
   const filteredOffers = getMaxOffers(computedOffers.filter((adv) => (
     checkFeatures(adv) && checkGuests(adv) &&
     checkRooms(adv) && checkPrice(adv) &&
@@ -72,14 +72,12 @@ const onFilterChange = () => {
   )));
 
   generateMarkers(filteredOffers);
-};
+});
 
 const filterOffers = (offers) => {
   computedOffers = offers;
 
-  filter.addEventListener('change', () => {
-    debounce(onFilterChange(), 5000);
-  });
+  filter.addEventListener('change', onFilterChange);
 
   return getMaxOffers(computedOffers);
 };
