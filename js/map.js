@@ -21,7 +21,7 @@ const createSelectMarker = () => {
   };
   const marker = new L.marker(startCoords, selectMarkerOptions);
 
-  marker.addEventListener('moveend', (e) => {
+  marker.addEventListener('move', (e) => {
     const {lat, lng} = e.target._latlng;
     const maxFloat = 5;
 
