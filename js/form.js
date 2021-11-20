@@ -1,6 +1,7 @@
 import {setDefaultCoordsSelectMarker} from './map.js';
 import {fetchSendForm} from './http.js';
 import {createErrModal, createSuccessModal} from './modal.js';
+import {filterReset} from './filter.js';
 
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
@@ -98,6 +99,7 @@ const clearForm = () => {
   priceInput.placeholder = houseTypePrices[houseTypeSelector.value];
   setAddress(startCoords[0], startCoords[1]);
   setDefaultCoordsSelectMarker();
+  filterReset();
 };
 
 const onSendSuccess = () => {
@@ -114,6 +116,7 @@ const onFormSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(form);
     fetchSendForm(formData, onSendSuccess, onSendError);
+    filterReset();
   }
 };
 

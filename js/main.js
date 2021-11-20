@@ -17,6 +17,6 @@ const onErrorFetchOffer = () => {
 };
 
 createMap().whenReady(()=>{
-  activateForm();
   fetchOfferListData(onSuccessFetchOffer, onErrorFetchOffer);
+  activateForm();
 });

@@ -84,4 +84,9 @@ const filterOffers = (offers) => {
   return getMaxOffers(computedOffers);
 };
 
-export {filterOffers};
+const filterReset = () => {
+  filter.reset();
+  onFilterChange();
+};
+
+export {filterOffers, filterReset};
