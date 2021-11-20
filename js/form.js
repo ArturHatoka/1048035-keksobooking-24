@@ -2,6 +2,7 @@ import {setDefaultCoordsSelectMarker} from './map.js';
 import {fetchSendForm} from './http.js';
 import {createErrModal, createSuccessModal} from './modal.js';
 
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const roomsSelector = document.querySelector('#room_number');
@@ -13,6 +14,10 @@ const timeoutSelector = document.querySelector('#timeout');
 const address = document.querySelector('#address');
 const submit = document.querySelector('.ad-form__submit');
 const clear = document.querySelector('.ad-form__reset');
+const avatar = document.querySelector('#avatar');
+const avatarPrev = document.querySelector('.ad-form-header__preview img');
+const images = document.querySelector('#images');
+const imagesWrap = document.querySelector('.ad-form__photo');
 const startCoords = [35.6895000, 139.6917100];
 
 const houseTypePrices = {
@@ -117,6 +122,28 @@ const onFormSubmit = (e) => {
   }
 };
 
+const checkFileType = (fileName) => FILE_TYPES.some((it) => fileName.endsWith(it));
+
+const onAvatarChange = () => {
+  const file = avatar.files[0];
+  const fileName = file.name.toLowerCase();
+
+  if (checkFileType(fileName)) {
+    avatarPrev.src = URL.createObjectURL(file);
+  }
+};
+
+const onImagesChange = () => {
+  const file = images.files[0];
+  const fileName = file.name.toLowerCase();
+
+  if (checkFileType(fileName)) {
+    const imagePrev = document.createElement('img');
+    imagePrev.src = URL.createObjectURL(file);
+    imagesWrap.append(imagePrev);
+  }
+};
+
 capacitySelector.appendChild(getCapacityOptions(roomsSelector.value));
 priceInput.min = houseTypePrices[houseTypeSelector.value];
 priceInput.placeholder = houseTypePrices[houseTypeSelector.value];
@@ -127,6 +154,8 @@ roomsSelector.addEventListener('change', onRoomsNumberChange);
 houseTypeSelector.addEventListener('change', onHouseTypeChange);
 timeinSelector.addEventListener('change', onTimeinChange);
 timeoutSelector.addEventListener('change', onTimeoutChange);
+images.addEventListener('change', onImagesChange);
+avatar.addEventListener('change', onAvatarChange);
 submit.addEventListener('click', onFormSubmit);
 clear.addEventListener('click', (e) => {
   e.preventDefault();
