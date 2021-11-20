@@ -78,7 +78,7 @@ const filterOffers = (offers) => {
   computedOffers = offers;
 
   filter.addEventListener('change', () => {
-    debounce(onFilterChange());
+    debounce(onFilterChange(), 5000);
   });
 
   return getMaxOffers(computedOffers);

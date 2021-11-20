@@ -1,10 +1,10 @@
 import {setAddress} from './form.js';
 import {generateCard} from './baloon.js';
 
-const startCoords = [35.6895000, 139.6917100];
+const START_COORDS = [35.6894, 139.692];
 const layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 const map = new L.map('map-canvas', {
-  center: startCoords,
+  center: START_COORDS,
   zoom: 13,
   renderer: L.svg(),
 });
@@ -19,7 +19,7 @@ const createSelectMarker = () => {
     icon: selectIcon,
     draggable: true,
   };
-  const marker = new L.marker(startCoords, selectMarkerOptions);
+  const marker = new L.marker(START_COORDS, selectMarkerOptions);
 
   marker.addEventListener('move', (e) => {
     const {lat, lng} = e.target._latlng;
@@ -34,7 +34,7 @@ const createSelectMarker = () => {
 const selectMarker = createSelectMarker();
 
 const setDefaultCoordsSelectMarker = () => {
-  selectMarker.setLatLng(startCoords);
+  selectMarker.setLatLng(START_COORDS);
 };
 
 const createAdvertMarker = (coords) => {

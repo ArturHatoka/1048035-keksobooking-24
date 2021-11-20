@@ -4,6 +4,7 @@ import {createErrModal, createSuccessModal} from './modal.js';
 import {filterReset} from './filter.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const START_COORDS = [35.6894, 139.692];
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const roomsSelector = document.querySelector('#room_number');
@@ -19,7 +20,6 @@ const avatar = document.querySelector('#avatar');
 const avatarPrev = document.querySelector('.ad-form-header__preview img');
 const images = document.querySelector('#images');
 const imagesWrap = document.querySelector('.ad-form__photo');
-const startCoords = [35.6895000, 139.6917100];
 
 const houseTypePrices = {
   'bungalow': 0,
@@ -102,7 +102,7 @@ const setAddress = (lat, lng) => {
 const clearForm = () => {
   form.reset();
   priceInput.placeholder = houseTypePrices[houseTypeSelector.value];
-  setAddress(startCoords[0], startCoords[1]);
+  setAddress(START_COORDS[0], START_COORDS[1]);
   setDefaultCoordsSelectMarker();
   filterReset();
 };
@@ -151,7 +151,7 @@ capacitySelector.appendChild(getCapacityOptions(roomsSelector.value));
 priceInput.min = houseTypePrices[houseTypeSelector.value];
 priceInput.placeholder = houseTypePrices[houseTypeSelector.value];
 
-setAddress(startCoords[0], startCoords[1]);
+setAddress(START_COORDS[0], START_COORDS[1]);
 
 roomsSelector.addEventListener('change', onRoomsNumberChange);
 houseTypeSelector.addEventListener('change', onHouseTypeChange);
