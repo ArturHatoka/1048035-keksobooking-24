@@ -24,6 +24,7 @@ const onEscKeydown = (e) => {
 const addModalListener = (modalWrapper) => {
   modalWrapper.addEventListener('click', ()=>{
     modalWrapper.remove();
+    window.removeEventListener('keydown', onEscKeydown);
   });
 
   window.addEventListener('keydown', onEscKeydown);
